@@ -10,12 +10,12 @@ server.use(cors());
 server.use(express.json());
 server.use("/api/users",UserRouter);
 server.use("/api/cartItems",CartRouter);
-server.use("/api/products",ProductRouter);
+server.use("/api/products",jwtAuth,ProductRouter);
 
 //Error handler middleware
-// server.use((err,req,res,next)=> {
-//     res.status(500).send("Something went wrong");
-// })
+server.use((err,req,res,next)=> {
+    res.status(500).send("Something went wrong");
+})
 
 server.get('/',(req,res)=> res.send("Welcome to Express!"));
 
