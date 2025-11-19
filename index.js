@@ -22,6 +22,7 @@ server.get('/',(req,res)=> res.send("Welcome to Express!"));
 
 server.listen(3200,()=>  {
     console.log("Server is Running")
+    // as soon as our server is started we need to connect to db
     connectToMongoDB();
 });
 
