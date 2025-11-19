@@ -16,6 +16,7 @@ const connectToMongoDB = async () => {
 
 export const getDB = () => {
     return client.db();
+    // client.db("ecomdb");
 }
 
 export default connectToMongoDB;
