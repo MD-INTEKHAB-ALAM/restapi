@@ -4,6 +4,7 @@ import UserRouter from "./src/features/user/user.routes.js";
 import CartRouter from "./src/features/cart/cartItems.routes.js";
 import cors from "cors";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
+import connectToMongoDB from "./src/config/mongodb.js";
 const server = express();
 
 server.use(cors());
@@ -19,6 +20,9 @@ server.use((err,req,res,next)=> {
 
 server.get('/',(req,res)=> res.send("Welcome to Express!"));
 
-server.listen(3200,()=> console.log("Server is Running"));
+server.listen(3200,()=>  {
+    console.log("Server is Running")
+    connectToMongoDB();
+});
 
 
