@@ -26,12 +26,12 @@ export class UserController {
             const user = await this.userRepository.findByEmail(req.body.email);
             if(!user) {
                 res.status(400).send("Incorrect credentials");
-            }
+            }np
             const result = await bcrypt.compare(req.body.password,user.password);
             //returns true or false
             if(result) {
                  //1. Create a token
-                const token = jwt.sign({userID:result.id,email:result.email},"DdjXhZDtlunzLWjNF2EnXTvJi3w2lWfu",{expiresIn:"1h"});
+                const token = jwt.sign({userID:result.id,email:result.email},process.env.JWT_SECRET,{expiresIn:"1h"});
                 //2. send Token
                 res.status(200).send(token);
             }
