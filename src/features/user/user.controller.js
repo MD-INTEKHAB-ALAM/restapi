@@ -1,12 +1,22 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
+import { UserRepository } from "./user.repository.js";
 
 export class UserController {
 
+    constructor() {
+        this.userRepository = new UserRepository();
+    }
+
     async signUp(req,res) {
         const {name,email,password,type} = req.body;
-        const newUser = await UserModel.signUp(name,email,password,type);
-        console.log(newUser);
+        const user = new UserModel(name,email,password,type);
+        try {
+            await this.userRepository.signUp(user);
+        }
+        catch(err){
+
+        }
         res.status(201).send(newUser);
     }
 
