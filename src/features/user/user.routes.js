@@ -7,6 +7,8 @@ const userController = new UserController;
 router.post('/signup', (req,res) => {
     userController.signUp(req,res);
 });
-router.post('/signin', userController.signIn);
+router.post('/signin', (req,res) => {
+    userController.signIn(req,res);
+});
 
 export default router;

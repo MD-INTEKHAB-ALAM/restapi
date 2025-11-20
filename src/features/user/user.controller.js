@@ -15,21 +15,28 @@ export class UserController {
             await this.userRepository.signUp(user);
         }
         catch(err){
-
+            res.status(400).send(err);
         }
-        res.status(201).send(newUser);
+        res.status(201).send(user);
     }
 
-    signIn(req,res) {
-        const result = UserModel.signIn(req.body.email,req.body.password);
-        if(!result) {
-            return res.status(401).send("Incorrect credentials");
+    async signIn(req,res) {
+        try {
+            const result = await this.userRepository.signIn(req.body.name,req.body.password);
+            if(!result) {
+                return res.status(401).send("Incorrect credentials");
+            }
+            else {
+                //1. Create a token
+                const token = jwt.sign({userID:result.id,email:result.email},"DdjXhZDtlunzLWjNF2EnXTvJi3w2lWfu",{expiresIn:"1h"});
+                //2. send Token
+                res.status(200).send(token);
+            }
         }
-        else {
-            //1. Create a token
-            const token = jwt.sign({userID:result.id,email:result.email},"DdjXhZDtlunzLWjNF2EnXTvJi3w2lWfu",{expiresIn:"1h"});
-            //2. send Token
-            res.status(200).send(token);
+        catch(err) {
+            console.log("Controller Error");
         }
+        
+        
     }
 }

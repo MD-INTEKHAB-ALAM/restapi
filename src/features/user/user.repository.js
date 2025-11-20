@@ -13,4 +13,16 @@ export class UserRepository {
             console.log(err);
         }
     }
+    async  signIn(name,password) {
+        try {
+            const db = getDB();
+            const collection = db.collection("user");
+            const userExist = await collection.findOne({name});
+            return userExist;
+        }
+        catch(err) {
+            console.log("DB " , err);
+        }
+            
+    }
 }
