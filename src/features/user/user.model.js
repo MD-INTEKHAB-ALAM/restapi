@@ -13,10 +13,8 @@ export default class UserModel {
         try{
             //1. Get the db
             const db = getDB();
-    
             //2. Get the collection
-            const collection = await db.collection("user");
-            console.log(newUser);
+            const collection = db.collection("user");
             const newUser = new UserModel(
                 name,
                 email,
@@ -25,7 +23,7 @@ export default class UserModel {
             )
             //3. insert the detail in mongodb
             await collection.insertOne(newUser);
-            return "Added";
+            return newUser;
         }
         catch(error) {
             return error;
