@@ -2,8 +2,7 @@ import { getDB } from "../../config/mongodb.js";
 
 export default class UserModel {
     
-    constructor(id,email,name,password,type) {
-        this.id = id;
+    constructor(email,name,password,type) {
         this.email = email; 
         this.name = name;
         this.password = password;
@@ -12,13 +11,12 @@ export default class UserModel {
 
     static async signUp(name,email,password,type) {
         try{
-
             //1. Get the db
             const db = getDB();
     
             //2. Get the collection
-            const collection = db.collection("user");
-    
+            const collection = await db.collection("user");
+            console.log(newUser);
             const newUser = new UserModel(
                 name,
                 email,
@@ -27,7 +25,7 @@ export default class UserModel {
             )
             //3. insert the detail in mongodb
             await collection.insertOne(newUser);
-            return newUser;
+            return "Added";
         }
         catch(error) {
             return error;
