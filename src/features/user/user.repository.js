@@ -1,5 +1,6 @@
 import { getDB } from "../../config/mongodb.js";
-
+// Repository == Database layer
+// Model = How data must look like, validation can be done and then store in the db
 export class UserRepository {
 
     async signUp(newUser) {
