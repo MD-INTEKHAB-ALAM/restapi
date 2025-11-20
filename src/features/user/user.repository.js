@@ -14,11 +14,11 @@ export class UserRepository {
             console.log(err);
         }
     }
-    async  signIn(name,password) {
+    async  findByEmail(email) {
         try {
             const db = getDB();
             const collection = db.collection("user");
-            const userExist = await collection.findOne({name});
+            const userExist = await collection.findOne({email});
             return userExist;
         }
         catch(err) {
