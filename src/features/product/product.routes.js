@@ -5,9 +5,18 @@ import { upload } from "../../middlewares/fileupload.middleware.js";
 const router = express.Router();
 const productController = new ProductController();
 
-router.get("/",productController.getAllProducts);
-router.post('/rate',productController.rateProduct);
-router.get("/filter",productController.filterProduct);
+router.get("/",(req,res) => {
+    productController.getAllProducts(req,res)
+});
+
+router.post('/rate',(req,res) => {
+    productController.rateProduct(req,res)
+});
+
+router.get("/filter",(req,res) => {
+    productController.filterProduct(req,res)
+});
+
 router.get("/:id",productController.getOneProduct);
 // process the image and upload it to the respective folder and attach the image to req.file 
 router.post("/",

@@ -9,11 +9,6 @@ export default class UserModel {
         this.type = type;
     }
 
-    static signIn(email,password) {
-        const userExist = users.find((user) => user.email == email && user.password == password);
-        return userExist;
-    }
-
     static getAll() {
         return users;
     }

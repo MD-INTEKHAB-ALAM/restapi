@@ -6,7 +6,7 @@ import CartRouter from "./src/features/cart/cartItems.routes.js";
 import cors from "cors";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import connectToMongoDB from "./src/config/mongodb.js";
-const server = express();
+const server = express(); 
 
 server.use(cors());
 server.use(express.json());

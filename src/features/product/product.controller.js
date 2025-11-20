@@ -1,31 +1,47 @@
 import ProductModel from "./product.model.js"
+import ProductRepository from "./product.repository.js";
 
 export default class ProductController {
+
+    constructor() {
+        this.productRepository = new ProductRepository();
+    }
     
-    getAllProducts(req,res) {
-        const products = ProductModel.GetAll();
+    async getAllProducts(req,res) {
+        const products = await this.productRepository.getAll();
+        if(!products) {
+            return res.status(400).send("No Product Found");
+        }
         res.status(201).send(products);
     }
 
-    addProduct(req,res){
+    async addProduct(req,res){
         const {name,price,sizes} = req.body;
-        const newProduct = {
-            name,
-            price:parseFloat(price),
-            sizes : sizes.split(','),
-            imagerUrl : req.file.filename,
+        const newProduct = new ProductModel(name,null,parseFloat(price),req.file.filename,null,sizes.split(','));
+        try {
+            const product = await this.productRepository.add(newProduct);
+            if(!product) {
+                return res.status(400).send("Something went Wrong while adding the Product");
+            }
+            res.status(201).send(product);
         }
-        const createdRecord = ProductModel.add(newProduct);
-        res.status(201).send(createdRecord);
+        catch(err) {
+            res.status(400).send("Error Occured while adding new Product");
+        }
     }
 
-    getOneProduct(req,res) {
+    async getOneProduct(req,res) {
         const id = req.params.id;
-        const product = ProductModel.getOne(id);
-        if(!product) {
-            return res.status(404).send("Not Found");
+        try {
+            const product = await this.productRepository.getOne(id);
+            if(!product) {
+                return res.status(404).send("Not Found");
+            }
+            res.status(200).send(product);
         }
-        else res.status(201).send(product);
+        catch(err) {
+            return res.status(400).send("Couldn't get the Product");
+        }
     }
 
     filterProduct(req,res) {
