@@ -10,15 +10,6 @@ export default class ProductModel{
         this.sizes=sizes;
         this.id=id;
     }
-    
-    static filter(minPrice,maxPrice,category) {
-      const filterProduct = products.filter((product)=> (
-        (!minPrice || product.price >= minPrice) &&
-        (!maxPrice || product.price<=maxPrice) &&
-        (!category || product.category==category)
-      ))
-      return filterProduct;
-    }
 
     static rate(userID,productID,rating) {
       //1. If a user is valid 

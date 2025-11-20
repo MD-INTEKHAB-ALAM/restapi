@@ -34,6 +34,7 @@ export default class ProductController {
         const id = req.params.id;
         try {
             const product = await this.productRepository.getOne(id);
+            console.log(product);
             if(!product) {
                 return res.status(404).send("Not Found");
             }

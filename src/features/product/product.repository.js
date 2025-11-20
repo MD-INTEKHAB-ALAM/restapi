@@ -40,4 +40,15 @@ export default class ProductRepository {
             return new Error(err);
         }
     }
+    
+    async filter(minPrice,maxPrice,category) {
+        try {
+            const db = getDB();
+            const collection = db.collection(this.collection);
+            await collection.find({minPrice,maxPrice,category})
+        }
+        catch(err){
+            return new Error(err);
+        }
+    }
 }
