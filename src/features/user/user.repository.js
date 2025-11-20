@@ -1,5 +1,6 @@
 import { getDB } from "../../config/mongodb.js";
-
+// Repository == Database layer
+// Model = How data must look like, validation can be done and then store in the db
 export class UserRepository {
 
     async signUp(newUser) {
@@ -12,5 +13,17 @@ export class UserRepository {
         catch(err) {
             console.log(err);
         }
+    }
+    async  findByEmail(email) {
+        try {
+            const db = getDB();
+            const collection = db.collection("user");
+            const userExist = await collection.findOne({email});
+            return userExist;
+        }
+        catch(err) {
+            console.log("DB " , err);
+        }
+            
     }
 }
