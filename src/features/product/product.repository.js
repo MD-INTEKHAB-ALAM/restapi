@@ -41,14 +41,34 @@ export default class ProductRepository {
         }
     }
     
-    async filter(minPrice,maxPrice,category) {
+    async filter(minPrice, maxPrice, category) {
         try {
             const db = getDB();
             const collection = db.collection(this.collection);
-            await collection.find({minPrice,maxPrice,category})
-        }
-        catch(err){
-            return new Error(err);
+            if (minPrice !== undefined) minPrice = Number(minPrice);
+            if (maxPrice !== undefined) maxPrice = Number(maxPrice);
+
+            let filterExpression = {};
+
+            if (minPrice !== undefined) {
+                filterExpression.price = { $gte: minPrice };
+            }
+
+            if (maxPrice !== undefined) {
+                filterExpression.price = {
+                    ...(filterExpression.price || {}),
+                    $lte: maxPrice
+                };
+            }
+
+            if (category !== undefined) {
+                filterExpression.category = category;  // allows null
+            }
+            const filteredProducts = await collection.find(filterExpression).toArray();
+            return filteredProducts;
+
+        } catch (err) {
+            console.log(err);
         }
     }
 }
