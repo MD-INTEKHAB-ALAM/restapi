@@ -48,7 +48,7 @@ export default class ProductRepository {
             if (minPrice !== undefined) minPrice = Number(minPrice);
             if (maxPrice !== undefined) maxPrice = Number(maxPrice);
 
-            let filterExpression = {};
+            let filterExpression = {}; 
 
             if (minPrice !== undefined) {
                 filterExpression.price = { $gte: minPrice };
@@ -70,5 +70,20 @@ export default class ProductRepository {
         } catch (err) {
             console.log(err);
         }
+    }
+
+    async rate(userID,productID,rating) {
+        const db = getDB();
+        const collection = db.collection(this.collection);
+        //1. Find the Product
+        const product = await collection.findOne({_id:new ObjectId(productID)});
+
+        if(!product) {
+            return false;
+        }
+        //2. Find the user in Product
+        const user = product.ratings.find(u => u.userID === userID);
+
+
     }
 }
