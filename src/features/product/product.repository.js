@@ -78,12 +78,24 @@ export default class ProductRepository {
         //1. Find the Product
         const product = await collection.findOne({_id:new ObjectId(productID)});
 
-        if(!product) {
-            return false;
+        //2. Find the user in Product  
+        const userRating = product?.ratings?.find(u => u.userID === new ObjectId(userID));
+        if(userRating) {
+            await collection.updateOne(
+            {_id:new ObjectId(productID),"ratings.userID": new ObjectId(userID)}, // ratings must be an array or object to be iterable
+            {
+                $set: {
+                    "ratings.$.rating" : rating //mongodb if finds the userId object it internally stores the index in $ so we can use ratings[1].rating as ratings.$.rating
+                }
+            }
+        )
         }
-        //2. Find the user in Product
-        const user = product.ratings.find(u => u.userID === userID);
-
+        else {
+            await collection.updateOne(
+            {_id:new ObjectId(productID)},
+            {$push : {rating: {userID:new ObjectId(userID),rating:rating}}}
+        );
+        }
 
     }
 }
