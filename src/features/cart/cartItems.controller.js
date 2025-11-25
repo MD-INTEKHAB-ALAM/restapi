@@ -1,26 +1,37 @@
 import CartItemModel from "./cartItems.model.js";
-
+import { CartItemRepository } from "./cartItems.repository.js";
 export default class CartItemController {
-    add(req,res) {
-        const {productID, quantity} = req.query;
+
+    constructor() {
+        this.cartItemRepository = new CartItemRepository();
+    }
+
+    async add(req,res) {
+        const {productID, quantity} = req.body;
         const userID = req.userID;
-        CartItemModel.add(productID,userID,quantity);
-        res.status(201).send("CartItems Added");
+        const cart = await this.cartItemRepository.add(productID,userID,quantity);
+        if(cart) return res.status(201).send("CartItems Added");
+        return res.status(400).send("Something went wrong in cartItems");
     }
 
-    get(req,res) {
-        const result = CartItemModel.get(req,userID);
-        res.status(201).send(result);
-
-    }
-
-    delete(req,res) {
-        const error = CartItemModel.delete(req.params.cartItemID,req.userID);
-        if(!error) {
-            return res.status().send("Successfully deleted");
+    async get(req,res) {
+        try {
+            const result = await this.cartItemRepository.get(req.userID);
+            res.status(201).send(result);
         }
-        else {
-            return res.status(404).send(error);
+        catch(err) {
+            res.status(404).send("Error Occured");
+        }
+
+    }
+
+    async delete(req,res) {
+        try {
+            const error = await this.cartItemRepository.delete(req.params.cartItemID,req.body.userID);
+            return res.status().send(error);
+        }
+        catch(err) {
+            res.status(400).send(err);
         }
     }
 }
