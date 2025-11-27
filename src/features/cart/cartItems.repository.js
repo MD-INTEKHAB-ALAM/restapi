@@ -12,7 +12,11 @@ export class CartItemRepository {
         const collection = db.collection(this.collection);
 
         try {
-            await collection.insertOne({productID:new ObjectId(productID),userID: new ObjectId(userID),quantity:quantity});
+            await collection.updateOne(
+            {productID:new ObjectId(productID),userID: new ObjectId(userID)},
+            { $inc :{quantity:quantity}},
+            {upsert:true}
+            );
             return {productID,userID,quantity};
         }
         catch(err) {
@@ -38,7 +42,7 @@ export class CartItemRepository {
             const db = getDB();
             const collection = db.collection(this.collection);
 
-            return await collection.deleteOne({userID,_id : new ObjectId(cartItemID)});
+            await collection.deleteOne({userID : new ObjectId(userID),cartItemID : new ObjectId(cartItemID)});
         }
         catch(err) {
             throw new Error("Cannot delete from db");
