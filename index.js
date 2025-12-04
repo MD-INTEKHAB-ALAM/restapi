@@ -12,7 +12,7 @@ server.use(cors());
 server.use(express.json());
 server.use("/api/users",UserRouter);
 server.use("/api/cartItems",CartRouter);
-server.use("/api/products",ProductRouter);
+server.use("/api/products",jwtAuth,ProductRouter);
 
 //Error handler middleware
 server.use((err,req,res,next)=> {

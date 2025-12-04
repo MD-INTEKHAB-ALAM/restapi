@@ -8,7 +8,7 @@ export default function jwtAuth(req,res,next) {
     }
 
     try {
-        const payload = jwt.verify(token,"DdjXhZDtlunzLWjNF2EnXTvJi3w2lWfu");
+        const payload = jwt.verify(token,process.env.JWT_SECRET);
         req.userID = payload.userID;
         // res.status(200).send(payload);
     }
