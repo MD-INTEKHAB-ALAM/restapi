@@ -1,9 +1,16 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
+dotenv.config();
 const url="";
 
-export const connectToDbUsingMongoose = () => {
-    mongoose.connect(url,{useNewUrlParser : true, useUnifiedTopology: true})
-    .then(() => console.log("Connected using mongoose"))
-    .catch(err => console.log(err));
+export const connectToDbUsingMongoose = async () => {
+    try {
+       await mongoose.connect(url,{useNewUrlParser : true, useUnifiedTopology: true})
+       console.log("Connected to DB using mongoose");
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
+

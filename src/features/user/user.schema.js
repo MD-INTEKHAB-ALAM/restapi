@@ -6,5 +6,6 @@ const User = new Schema(
     email:String,
     password:String,
     type : {type:String,enum : ["Customer,Seller"]}
-});
+    }
+);
 
