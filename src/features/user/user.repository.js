@@ -34,4 +34,20 @@ export default class UserRepository {
             throw new Error("Error Occured while finding email");
         }
     }
+
+    async resetPassword(userID,newPassword) {
+        try {
+            let user = await UserModel.findById(userID);
+            if(user) {
+                user.password = newPassword;
+                user.save();
+            }
+            else {
+                throw new Error("User Not Found");
+            }
+        }
+        catch(err) {
+            
+        }
+    }
 }
