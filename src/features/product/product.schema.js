@@ -8,4 +8,10 @@ export const productSchema = new Schema({
     category : String,
     inStock : Number,
     sizes : Array,
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref : 'Review',
+        }
+    ]
 })
