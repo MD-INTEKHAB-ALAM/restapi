@@ -1,33 +1,52 @@
-import { getDB } from "../../config/mongodb.js";
-// Repository == Database layer
-// Model = How data must look like, validation can be done and then store in the db
-export class UserRepository {
+import mongoose from "mongoose";
+import { userSchema } from "./user.schema.js";
 
-    constructor() {
-        this.collection = "user";
-    }
+// creating model from schema.
+const UserModel = mongoose.model('User',userSchema);
 
-    async signUp(newUser) {
+export default class UserRepository {
+
+    async signUp(user) {
         try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            await collection.insertOne(newUser);
-            return newUser;
+            const newUser = new UserModel(user);
+            await newUser.save();
         }
         catch(err) {
-            console.log(err);
+            throw new Error("Error Occured while signup")
         }
     }
-    async  findByEmail(email) {
+
+    async signIn(email,password) {
         try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            const userExist = await collection.findOne({email});
-            return userExist;
+            return await UserModel.findOne({email,password});
         }
         catch(err) {
-            console.log("DB " , err);
+            throw new Error("Error Occured while singin")
         }
-            
+    }
+
+    async findByEmail(email) {
+        try {
+            return await UserModel.findOne({email});
+        }
+        catch(err) {
+            throw new Error("Error Occured while finding email");
+        }
+    }
+
+    async resetPassword(userID,newPassword) {
+        try {
+            let user = await UserModel.findById(userID);
+            if(user) {
+                user.password = newPassword;
+                user.save();
+            }
+            else {
+                throw new Error("User Not Found");
+            }
+        }
+        catch(err) {
+
+        }
     }
 }
