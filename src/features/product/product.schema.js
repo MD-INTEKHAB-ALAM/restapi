@@ -13,5 +13,11 @@ export const productSchema = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref : 'Review',
         }
+    ],
+    categories: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref : 'Category',
+        }
     ]
 })
