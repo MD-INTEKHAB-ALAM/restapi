@@ -3,19 +3,29 @@ import { getDB } from "../../config/mongodb.js";
 import mongoose from "mongoose";
 import { productSchema } from "./product.schema.js";
 import { reviewSchema } from "./review.schema.js";
+import { categorySchema } from "./category.schema.js";
 
 const ProductModel = mongoose.model('Product',productSchema);
 const ReveiwModel = mongoose.model('Reveiw',reviewSchema);
+const CategoryModel = mongoose.model('Category',categorySchema);
 export default class ProductRepository {
     constructor() {
         this.collection = "products";
     }
-    async add(product) {
+
+    async add(productData) {
         try {
-            const db = getDB();
-            const collection = db.collection(this.collection);
-            await collection.insertOne(product);
-            return product;
+           // 1. Add the product
+           const newProduct = new ProductModel(productData);
+           const savedProduct = await newProduct.save();
+
+           // 2. Update categoires.
+           await CategoryModel.updateMany(
+                {_id: {$in : productData.categories}},
+                {
+                    $push: {products: new ObjectId(savedProduct._id)}
+                }
+            )
         }
         catch(err) {
             return new Error(err);
