@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { userSchema } from "./user.schema.js";
 
 // creating model from schema.
-
 const UserModel = mongoose.model('User',userSchema);
 
 export default class UserRepository {
@@ -47,7 +46,7 @@ export default class UserRepository {
             }
         }
         catch(err) {
-            
+
         }
     }
 }
