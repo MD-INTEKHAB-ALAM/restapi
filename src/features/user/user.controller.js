@@ -26,7 +26,7 @@ export class UserController {
             const user = await this.userRepository.findByEmail(req.body.email);
             if(!user) {
                 res.status(400).send("Incorrect credentials");
-            }np
+            }
             const result = await bcrypt.compare(req.body.password,user.password);
             //returns true or false
             if(result) {

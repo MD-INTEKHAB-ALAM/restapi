@@ -6,11 +6,12 @@ import CartRouter from "./src/features/cart/cartItems.routes.js";
 import cors from "cors";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import connectToMongoDB from "./src/config/mongodb.js";
+
 const server = express(); 
 
 server.use(cors());
 server.use(express.json());
-server.use("/api/users",UserRouter);
+server.use("/api/users",UserRouter); 
 server.use("/api/cartItems",CartRouter);
 server.use("/api/products",jwtAuth,ProductRouter);
 
@@ -26,5 +27,3 @@ server.listen(3200,()=>  {
     // as soon as our server is started we need to connect to db
     connectToMongoDB();
 });
-
-
