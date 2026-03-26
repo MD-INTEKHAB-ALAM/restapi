@@ -18,6 +18,7 @@ export class UserRepository {
             console.log(err);
         }
     }
+    
     async  findByEmail(email) {
         try {
             const db = getDB();
